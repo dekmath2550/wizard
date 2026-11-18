@@ -2,7 +2,343 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport"<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="referrer" content="no-referrer"><title>Wizard — เล่นกับเพื่อนและบอท</title><style>
+:root{--bg:#1d5a3f;--bg2:#154631;--panel:rgba(0,0,0,.28);--tx:#f4f1e6;--mut:#b9d1c3;--card:#fffdf5;--cardtx:#222;--acc:#f2c94c;--dis:.38;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10372a;--bg2:#0a2619;--card:#efeadb}}
+:root[data-theme="dark"]{--bg:#10372a;--bg2:#0a2619;--card:#efeadb}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 30%,var(--bg),var(--bg2));color:var(--tx);font-family:"Noto Sans Thai","Sarabun",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:12px}
+h1{font-size:20px;margin:4px 0 8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1 small{font-weight:400;font-size:13px;color:var(--mut)}
+.seats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.seat{background:var(--panel);border-radius:10px;padding:6px 8px;font-size:12.5px;line-height:1.45;border:2px solid transparent}
+.seat.act{border-color:var(--acc)}
+.seat b{font-size:13.5px}
+.dl{color:var(--acc)}
+.table{margin:10px 0;min-height:150px;background:var(--panel);border-radius:14px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.info{font-size:13px;color:var(--mut);text-align:center}
+.trick{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:92px}
+.slot{display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--mut);gap:2px}
+.card{width:54px;height:80px;border-radius:7px;background:var(--card);color:var(--cardtx);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:20px;line-height:1.1;box-shadow:0 2px 5px rgba(0,0,0,.4);border:2px solid transparent;user-select:none}
+.card i{font-style:normal;font-size:22px}
+.card.sp{font-size:11px;font-weight:600}
+.card.sp i{font-size:28px}
+.card.back{background:repeating-linear-gradient(45deg,#6a3fb0,#6a3fb0 6px,#52308c 6px,#52308c 12px);color:#fff}
+.hand{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:6px 0}
+.hand .card{cursor:pointer;transition:transform .12s}
+.hand .card.ok:hover{transform:translateY(-8px);border-color:var(--acc)}
+.hand .card.no{opacity:var(--dis);cursor:not-allowed}
+.ctl{text-align:center;min-height:48px}
+.msg{text-align:center;margin:4px 0 6px;font-size:14.5px;min-height:22px}
+button{font:inherit;background:var(--acc);color:#2b2200;border:0;border-radius:8px;padding:7px 14px;margin:3px;cursor:pointer;font-weight:600}
+button.s{background:rgba(255,255,255,.16);color:var(--tx)}
+.sb{overflow-x:auto;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;text-align:center}
+td,th{padding:3px 6px;border-bottom:1px solid rgba(255,255,255,.12)}
+details{margin-top:8px;background:var(--panel);border-radius:10px;padding:6px 10px}
+summary{cursor:pointer;font-size:13.5px}
+@media(max-width:480px){.card{width:46px;height:68px;font-size:17px}.seat{font-size:11px;padding:5px}}
+
+[hidden]{display:none!important}body{line-height:1.55}main{max-width:900px;padding:20px 16px 36px}h1{margin-bottom:18px}h2{font-size:20px;margin:0 0 4px}p{margin:8px 0}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #fff;outline-offset:3px}input,select{font:inherit;padding:10px 12px;border-radius:9px;border:1px solid #ffffff40;background:#173c2d;color:var(--tx);max-width:100%}input{width:100%}select{cursor:pointer}label{display:block;margin-bottom:6px;font-size:14px}small,.hint{color:var(--mut)}.panel{padding:20px;border:1px solid #ffffff22;border-radius:16px;background:var(--panel);margin:12px 0}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.row.between{justify-content:space-between}.name-row{margin:18px 0}.name-row input{max-width:320px}.lobby-seat{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #ffffff16}.avatar{display:grid;place-items:center;width:42px;height:42px;flex-shrink:0;border-radius:50%;background:#ffffff0e;font-size:23px}.seat-copy{flex:1;min-width:0}.seat-copy b{display:block;overflow-wrap:anywhere}.seat-copy small{display:block;font-size:12px}.lobby-seat select{font-size:13px;width:115px}.badge{font-size:12px;background:#ffffff12;padding:3px 9px;border-radius:20px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.actions button{margin:0;min-height:44px}#startGame{flex:1}.hint{font-size:13px}#status{font-size:13px;padding:10px 14px;border-radius:10px;background:#ffffff0b;margin:12px 0;overflow-wrap:anywhere;min-height:40px}#shareText{font-size:12px;margin:10px 0}#share{border:1px dashed #f2c94c66}#joinBox{padding:14px}#joinBox input{margin-top:10px}#joinBox summary{font-size:15px}#pause{padding:12px;background:#755a16;border-radius:10px;margin:12px 0}#handTitle{text-align:center;font-size:13px;color:var(--mut);margin:16px 0 4px}.seats{grid-template-columns:repeat(var(--seat-count,4),minmax(0,1fr))}.seat{overflow-wrap:anywhere}.hand .card{margin:0;padding:0;flex-shrink:0;color:var(--cardtx)}.hand .card:disabled{opacity:.55}.hand .card.ok{opacity:1}.hand .card:disabled.no{cursor:default}.card{font-family:inherit}.slot span{max-width:90px;overflow-wrap:anywhere}#leave{font-size:12px;margin-top:16px}#reconnect{margin-top:10px}.help{font-size:13px;color:var(--mut)}.help li{margin:6px 0}
+@media(max-width:640px){.seats{grid-template-columns:repeat(3,minmax(0,1fr))}.panel{padding:15px}main{padding:12px 10px 28px}.lobby-seat{gap:8px}.lobby-seat select{width:109px;padding:8px}.actions button{flex:1}.table{min-height:180px}h1 small{font-size:12px}}
+</style></head>
+<body><main>
+<h1><span>🧙 Wizard</span><small id="rd">ตั้งค่าโต๊ะ</small></h1>
+<div id="status" role="status" aria-live="polite">เลือกจำนวนผู้เล่น แล้วชวนเพื่อนหรือเพิ่มบอท</div>
+<div id="nameRow" class="name-row"><label for="playerName">ชื่อของคุณ</label><input id="playerName" maxlength="24" placeholder="ใส่ชื่อที่ใช้เล่น" autocomplete="nickname"></div>
+<section id="setup">
+<details id="joinBox"><summary>มีคำเชิญจากเพื่อน? เข้าห้องที่นี่</summary><label for="inviteInput">ลิงก์คำเชิญหรือรหัสห้อง</label><input id="inviteInput" placeholder="วางลิงก์หรือรหัสที่เพื่อนส่งมา" autocomplete="off" spellcheck="false"><button id="joinButton" onclick="joinRoom()">เข้าห้องเพื่อน</button></details>
+<div class="panel">
+<div class="row between"><div><h2>จัดโต๊ะเล่น</h2><small id="roomCount"></small></div><div id="hostSettings"><label for="count">ผู้เล่นทั้งหมด (รวมคุณ)</label><select id="count" onchange="countChange(Number(this.value))"><option value="3">3 คน</option><option value="4" selected>4 คน</option><option value="5">5 คน</option><option value="6">6 คน</option></select></div></div>
+<div id="lobbySeats"></div>
+<p class="hint" id="lobbyHint"></p>
+<div class="actions"><button class="s" id="createRoom" onclick="createRoom()">🔗 เปิดห้องชวนเพื่อน</button><button id="startGame" onclick="newGame()">เริ่มเกม ▶</button></div>
+</div>
+<div id="share" class="panel" hidden><b>ชวนเพื่อนมาร่วมโต๊ะ</b><p class="hint" id="shareHint"></p><input id="shareText" aria-label="คำเชิญเข้าห้อง" readonly><div class="row"><button id="copyLink" onclick="copyInvite()">คัดลอกลิงก์เชิญ</button><button id="copyCode" class="s" onclick="copyInvite(true)">คัดลอกรหัสห้อง</button></div></div>
+</section>
+<button id="reconnect" onclick="joinRoom(true)" hidden>เชื่อมต่อกับเจ้าห้องใหม่</button>
+<section id="game" hidden><div id="pause" role="status" hidden></div><div class="seats" id="seats"></div><div class="table"><div class="info" id="info"></div><div class="trick" id="trick"></div></div><div class="msg" id="msg" aria-live="polite"></div><div class="ctl" id="ctl"></div><div id="handTitle"></div><div class="hand" id="hand" aria-label="ไพ่ของคุณ"></div><details><summary>📋 ตารางคะแนน</summary><div class="sb" id="sb"></div></details></section>
+<button class="s" id="leave" onclick="leaveRoom()" hidden>ออกจากห้อง / ตั้งค่าใหม่</button>
+<details class="help"><summary>วิธีเล่นและการชวนเพื่อน</summary><ol><li>เลือกผู้เล่น 3–6 คน แล้วเลือกแต่ละที่นั่งเป็น “ชวนเพื่อน” หรือ “เพิ่มบอท”</li><li>ถ้าเล่นกับบอททั้งหมด กดเริ่มเกมได้ทันที ไม่ต้องใช้อินเทอร์เน็ต</li><li>ถ้าชวนเพื่อน กด “เปิดห้องชวนเพื่อน” คัดลอกลิงก์ ส่งให้เพื่อนใส่ชื่อแล้วเข้าห้อง จากนั้นเจ้าห้องกดเริ่มเกม</li><li>เมื่อนำไฟล์ขึ้นเว็บ HTTPS ลิงก์จะเปิดเกมนี้ให้เพื่อนโดยตรง ถ้าเปิดไฟล์บนเครื่อง ให้เพื่อนเปิดไฟล์เดียวกันแล้วใช้รหัสห้องแทน</li><li>เจ้าห้องต้องเปิดหน้าเกมไว้ตลอด หากเพื่อนหลุด เกมจะหยุดรอ เจ้าห้องเลือกให้บอทแทนได้ หากเจ้าห้องปิดหรือรีเฟรชหน้า เกมจะสิ้นสุด</li></ol><p>ก่อนแต่ละรอบ ทายจำนวนตาที่จะชนะ ต้องลงไพ่ตามสีที่นำหากมี แต่ Wizard / Jester ลงได้เสมอ · Wizard ชนะไพ่ทั่วไป (ใบแรกชนะ) · Jester แพ้ไพ่ทั่วไป · ทายถูกได้ 20 + 10 × จำนวนตาที่ชนะ ทายผิดเสีย 10 × จำนวนที่คลาดเคลื่อน</p><p>3 คน = 20 รอบ · 4 คน = 15 รอบ · 5 คน = 12 รอบ · 6 คน = 10 รอบ</p><p>ออนไลน์ใช้ PeerJS / WebRTC และอินเทอร์เน็ตของผู้เล่น บางเครือข่ายอาจบล็อกการเชื่อมต่อโดยตรง ให้ลองเปลี่ยน Wi-Fi หรือใช้เครือข่ายมือถือ</p></details>
+<noscript>เกมนี้ต้องเปิดใช้งาน JavaScript ในเบราว์เซอร์</noscript>
+</main><script>'use strict';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SU=[{c:'#d64545',s:'♥',n:'แดง'},{c:'#b77b00',s:'★',n:'เหลือง'},{c:'#23844b',s:'♣',n:'เขียว'},{c:'#3b6fd4',s:'♦',n:'น้ำเงิน'}];
+const uid=()=>Array.from(crypto.getRandomValues(new Uint8Array(16)),v=>v.toString(16).padStart(2,'0')).join('');
+let players=[{name:'คุณ',kind:'host',connected:true},...Array.from({length:3},(_,i)=>({name:`บอท ${i+1}`,kind:'bot',connected:true}))];
+let G=null,view=null,role='host',mySeat=0,peer=null,hostConn=null,room='',secret='',online=false,busy=false,rev=0,timer=null,epoch=0,joinTimeout=null,guestToken='',pendingAction=false;
+const connections=new Map();
+function status(s){$('status').textContent=s}
+function cleanName(s,fallback='ผู้เล่น'){return String(s||'').trim().slice(0,24)||fallback}
+function publicPlayers(){return players.map(({name,kind,connected})=>({name,kind,connected}))}
+function blocked(){return players.some(p=>p.kind==='friend'&&!p.connected)}
+function canStart(){return role==='host'&&!G&&!blocked()&&(!players.some(p=>p.kind==='friend')||online)}
+function countChange(n){
+ if(role!=='host'||G||!Number.isInteger(n)||n<3||n>6)return;
+ if(players.slice(n).some(p=>p.kind==='friend'&&p.connected)){status('มีเพื่อนนั่งอยู่ในที่นั่งที่จะถูกลบ ให้เพื่อนออกจากห้องก่อน');$('count').value=players.length;return}
+ while(players.length<n)players.push({name:`บอท ${players.length}`,kind:'bot',connected:true});
+ players.length=n;publish();
+}
+function seatChange(i,kind){
+ if(role!=='host'||G||i<1||i>=players.length||!['bot','friend'].includes(kind))return;
+ if(players[i].kind==='friend'&&players[i].connected)return;
+ players[i]={name:kind==='bot'?`บอท ${i}`:`รอเพื่อน ${i}`,kind,connected:kind==='bot'};publish();
+}
+function snapshot(p){
+ const base={type:'state',rev,seat:p,players:publicPlayers(),online};
+ if(!G)return {...base,game:null};
+ // Only send the recipient's hand. Other hands, the deck and reconnect tokens stay on the host.
+ return {...base,game:{r:G.r,max:G.max,dealer:G.dealer,scores:G.scores,hist:G.hist,trump:G.trump,tc:G.tc,bids:G.bids,won:G.won,trick:G.trick,phase:G.phase,actor:G.actor,last:G.last,counts:G.hands.map(h=>h.length),hand:G.hands[p],legal:G.phase==='play'&&G.actor===p?legal(p).map(c=>G.hands[p].indexOf(c)):[]}};
+}
+function send(c,data){if(c?.open){try{c.send(data)}catch{status('ส่งข้อมูลไม่สำเร็จ กำลังรอการเชื่อมต่อ')}}}
+function publish(){
+ if(role!=='host')return;
+ rev++;view=snapshot(0);render();
+ for(const [i,c] of connections)send(c,snapshot(i));
+}
+function schedule(){
+ clearTimeout(timer);timer=null;
+ if(role!=='host'||!G||blocked())return;
+ const e=epoch;
+ if(G.phase==='trickEnd'){timer=setTimeout(()=>{if(epoch===e&&!blocked())endTrick()},1200);return}
+ const p=G.actor;
+ if(p<0||players[p]?.kind!=='bot')return;
+ timer=setTimeout(()=>{if(epoch!==e||blocked())return;
+   if(G.phase==='trump')action(p,{kind:'trump',value:commonSuit(p),rev});
+   else if(G.phase==='bid')action(p,{kind:'bid',value:botBid(p),rev});
+   else if(G.phase==='play')action(p,{kind:'play',value:G.hands[p].indexOf(botPlay(p)),rev});
+ },650);
+}
+function deck(){const d=[];for(let s=0;s<4;s++)for(let v=1;v<=13;v++)d.push({s,v});for(let i=0;i<4;i++)d.push({w:1},{j:1});return d}
+function shuf(a){for(let i=a.length-1;i>0;i--){const k=Math.floor(Math.random()*(i+1));[a[i],a[k]]=[a[k],a[i]]}return a}
+const cardKey=c=>c.w?-1:c.j?99:c.s*20+c.v;
+const pow=c=>c.w?100:c.j?0:c.v+(c.s===G.trump?20:0);
+function newGame(){
+ if(!canStart())return;
+ epoch++;G={r:0,max:Math.floor(60/players.length),dealer:players.length-1,scores:players.map(()=>0),hist:[]};startRound();
+}
+function startRound(){
+ clearTimeout(timer);G.r++;G.dealer=(G.dealer+1)%players.length;
+ const d=shuf(deck());G.hands=players.map(()=>[]);
+ for(let i=0;i<G.r;i++)for(let p=0;p<players.length;p++)G.hands[p].push(d.pop());
+ G.hands.forEach(h=>h.sort((a,b)=>cardKey(a)-cardKey(b)));
+ G.tc=d.length?d.pop():null;G.trump=G.tc&&!G.tc.w&&!G.tc.j?G.tc.s:null;
+ G.bids=players.map(()=>null);G.won=players.map(()=>0);G.trick=[];G.k=0;G.last='';
+ if(G.tc?.w){G.phase='trump';G.actor=G.dealer;publish();schedule()}else nextBid();
+}
+function commonSuit(p){const n=[0,0,0,0];G.hands[p].forEach(c=>{if(c.s!=null)n[c.s]++});return n.indexOf(Math.max(...n))}
+function nextBid(){
+ if(G.k>=players.length){G.phase='play';G.actor=(G.dealer+1)%players.length}
+ else{G.phase='bid';G.actor=(G.dealer+1+G.k)%players.length}
+ publish();schedule();
+}
+function botBid(p){let e=0;G.hands[p].forEach(c=>{if(c.w)e++;else if(c.j)return;else if(c.s===G.trump)e+=c.v>=11?1:c.v>=7?.5:.15;else e+=c.v>=13?.65:c.v>=12?.3:0});return Math.max(0,Math.min(G.r,Math.round(e)))}
+function leadSuit(t){for(const x of t){if(x.card.w)return null;if(!x.card.j)return x.card.s}return null}
+function legal(p,t=G.trick){const h=G.hands[p],ls=leadSuit(t);return ls==null||!h.some(c=>c.s===ls)?h:h.filter(c=>c.s===ls||c.w||c.j)}
+function winner(t){
+ const w=t.find(x=>x.card.w);if(w)return w.p;
+ const tr=t.filter(x=>G.trump!=null&&x.card.s===G.trump),ls=leadSuit(t);
+ const pool=tr.length?tr:t.filter(x=>ls!=null&&x.card.s===ls);
+ return pool.length?pool.reduce((a,b)=>b.card.v>a.card.v?b:a).p:t[0].p;
+}
+function botPlay(p){
+ const byPow=[...legal(p)].sort((a,b)=>pow(a)-pow(b)),need=G.bids[p]-G.won[p];
+ if(!G.trick.length)return need>0?byPow[byPow.length-1]:byPow[0];
+ const wins=byPow.filter(c=>winner([...G.trick,{p,card:c}])===p),loses=byPow.filter(c=>!wins.includes(c));
+ return need>0?(wins[0]||byPow[0]):(loses[loses.length-1]||byPow[0]);
+}
+function action(p,a){
+ if(role!=='host'||!G||blocked()||!a||a.rev!==rev)return false;
+ if(a.kind==='next'&&p===0&&G.phase==='roundEnd'){startRound();return true}
+ if(a.kind==='lobby'&&p===0&&['roundEnd','over'].includes(G.phase)){epoch++;clearTimeout(timer);G=null;publish();return true}
+ if(p!==G.actor||!Number.isInteger(a.value))return false;
+ if(a.kind==='trump'&&G.phase==='trump'&&a.value>=0&&a.value<4){G.trump=a.value;nextBid();return true}
+ if(a.kind==='bid'&&G.phase==='bid'&&a.value>=0&&a.value<=G.r){G.bids[p]=a.value;G.k++;nextBid();return true}
+ if(a.kind==='play'&&G.phase==='play'){
+   const c=G.hands[p][a.value];if(!c||!legal(p).includes(c))return false;
+   G.hands[p].splice(a.value,1);G.trick.push({p,card:c});
+   if(G.trick.length===players.length){G.phase='trickEnd';G.actor=-1}else G.actor=(p+1)%players.length;
+   publish();schedule();return true;
+ }return false;
+}
+function endTrick(){
+ if(!G||G.phase!=='trickEnd'||blocked())return;
+ const w=winner(G.trick);G.won[w]++;G.last=players[w].name;G.trick=[];G.actor=w;
+ if(!G.hands[0].length){
+   const d=G.bids.map((b,i)=>b===G.won[i]?20+10*b:-10*Math.abs(b-G.won[i]));
+   d.forEach((x,i)=>G.scores[i]+=x);G.hist.push({r:G.r,b:[...G.bids],w:[...G.won],d});G.phase=G.r===G.max?'over':'roundEnd';G.actor=-1;
+ }else G.phase='play';
+ publish();schedule();
+}
+function act(kind,value){
+ if(!view||pendingAction)return;
+ const a={kind,value,rev:view.rev};
+ if(role==='host')action(0,a);
+ else if(hostConn?.open){pendingAction=true;send(hostConn,{type:'action',action:a});render();}
+}
+function replaceBot(i){
+ if(role!=='host'||i<1||players[i]?.kind!=='friend'||players[i].connected)return;
+ const c=connections.get(i);connections.delete(i);if(c)c.close();
+ players[i]={name:`บอท ${i}`,kind:'bot',connected:true};publish();schedule();
+}
+let peerLoading=null;
+function loadPeer(){
+ if(window.Peer)return Promise.resolve();
+ if(peerLoading)return peerLoading;
+ peerLoading=new Promise((resolve,reject)=>{
+   const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js';
+   const t=setTimeout(()=>{s.remove();peerLoading=null;reject(Error('โหลดระบบออนไลน์หมดเวลา ตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง'))},15000);
+   s.onload=()=>{clearTimeout(t);resolve()};s.onerror=()=>{clearTimeout(t);s.remove();peerLoading=null;reject(Error('โหลดระบบออนไลน์ไม่ได้ ตรวจสอบอินเทอร์เน็ตหรือการบล็อก CDN'))};document.head.appendChild(s);
+ });return peerLoading;
+}
+function networkMessage(e){
+ if(e?.type==='peer-unavailable')return 'ไม่พบห้องนี้ ตรวจสอบคำเชิญและให้เจ้าห้องเปิดหน้าเกมไว้';
+ if(e?.type==='network'||e?.type==='server-error')return 'ติดต่อเซิร์ฟเวอร์เชื่อมต่อไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง';
+ return 'เชื่อมต่อไม่สำเร็จ ลองใหม่หรือเปลี่ยนเครือข่าย (บางเครือข่ายบล็อก WebRTC)';
+}
+async function createRoom(){
+ if(role!=='host'||busy||online||room||G)return;
+ busy=true;render();status('กำลังเปิดห้องออนไลน์…');
+ try{
+   await loadPeer();if(peer)peer.destroy();secret=uid();
+   const instance=peer=new Peer();
+   const opening=setTimeout(()=>{if(peer===instance&&!online){instance.destroy();busy=false;status('เปิดห้องหมดเวลา ลองใหม่อีกครั้ง');render()}},20000);
+   instance.on('open',id=>{if(peer!==instance)return;clearTimeout(opening);room=id;online=true;busy=false;status('เปิดห้องแล้ว เลือกที่นั่งเป็นเพื่อนแล้วส่งคำเชิญได้เลย');publish()});
+   instance.on('connection',acceptConnection);
+   instance.on('disconnected',()=>{if(peer!==instance)return;online=false;status('การเชื่อมต่อห้องขาดหาย กำลังเชื่อมต่อใหม่…');publish();if(!instance.destroyed)instance.reconnect()});
+   instance.on('error',e=>{if(peer!==instance)return;clearTimeout(opening);busy=false;status(networkMessage(e));render()});
+ }catch(e){busy=false;status(e.message);render()}
+}
+function acceptConnection(c){
+ let seat=-1;
+ c.on('open',()=>{
+   const m=c.metadata||{};
+   const reject=message=>{send(c,{type:'reject',message});setTimeout(()=>c.close(),300)};
+   if(role!=='host'||m.key!==secret||typeof m.token!=='string'||!/^[a-f0-9]{32}$/.test(m.token))return reject('คำเชิญไม่ถูกต้อง');
+   seat=players.findIndex(p=>p.kind==='friend'&&p.token===m.token);
+   if(seat>=0&&players[seat].connected)return reject('ผู้เล่นนี้เชื่อมต่ออยู่แล้ว กรุณาใช้แท็บเดิม');
+   if(seat<0){
+     if(G)return reject('เกมเริ่มแล้ว รอเจ้าห้องเริ่มเกมใหม่');
+     seat=players.findIndex(p=>p.kind==='friend'&&!p.connected&&!p.token);
+     if(seat<0)return reject('ที่นั่งเพื่อนเต็มแล้ว ให้เจ้าห้องเพิ่มที่นั่งเพื่อน');
+     players[seat].token=m.token;players[seat].name=cleanName(m.name,'เพื่อน');
+   }
+   const old=connections.get(seat);connections.set(seat,c);if(old&&old!==c)old.close();
+   players[seat].connected=true;publish();schedule();status(`${players[seat].name} เข้าห้องแล้ว`);
+ });
+ c.on('data',data=>{
+   if(seat<0||connections.get(seat)!==c||!data||typeof data!=='object')return;
+   if(data.type==='action'){
+     if(!action(seat,data.action))send(c,snapshot(seat));
+   }else if(data.type==='leave'){
+     connections.delete(seat);
+     if(G){players[seat].connected=false;delete players[seat].token}else players[seat]={kind:'friend',name:`รอเพื่อน ${seat}`,connected:false};
+     c.close();publish();schedule();
+   }
+ });
+ const lost=()=>{if(seat<0||connections.get(seat)!==c)return;connections.delete(seat);players[seat].connected=false;status(`${players[seat].name} หลุดจากห้อง รอเชื่อมต่อใหม่หรือเปลี่ยนเป็นบอท`);publish();schedule()};
+ c.on('close',lost);c.on('error',lost);
+}
+function parseInvite(raw){
+ let r='',k='';try{const u=new URL(raw);const h=new URLSearchParams(u.hash.slice(1));r=h.get('room')||'';k=h.get('key')||''}catch{[r,k]=raw.trim().split('.')}
+ return /^[a-zA-Z0-9_-]{1,100}$/.test(r)&&/^[a-f0-9]{32}$/.test(k)?{room:r,key:k}:null;
+}
+async function joinRoom(retry=false){
+ if(busy||G||role==='host'&&connections.size)return;
+ const invite=retry?{room,key:secret}:parseInvite($('inviteInput').value);
+ if(!invite)return status('วางลิงก์คำเชิญหรือรหัสห้องให้ครบก่อน');
+ const name=cleanName($('playerName').value,'เพื่อน');
+ room=invite.room;secret=invite.key;role='guest';view=null;mySeat=-1;busy=true;online=false;pendingAction=false;render();status('กำลังเข้าห้อง…');
+ try{
+   await loadPeer();
+   if(peer)peer.destroy();
+   try{guestToken=sessionStorage.getItem('wizard:'+room)||uid();sessionStorage.setItem('wizard:'+room,guestToken)}catch{guestToken=guestToken||uid()}
+   const instance=peer=new Peer();
+   clearTimeout(joinTimeout);joinTimeout=setTimeout(()=>{if(peer===instance&&!online){busy=false;instance.destroy();status('เข้าห้องหมดเวลา ให้เจ้าห้องเปิดหน้าเกมไว้ หรือลองเปลี่ยนเครือข่าย');render()}},25000);
+   instance.on('open',()=>{
+     if(peer!==instance)return;
+     const c=hostConn=instance.connect(room,{reliable:true,metadata:{key:secret,token:guestToken,name}});
+     c.on('data',data=>{
+       if(hostConn!==c||!data)return;
+       if(data.type==='reject'){clearTimeout(joinTimeout);busy=false;online=false;status(data.message);render();return}
+       if(data.type==='state'){
+         clearTimeout(joinTimeout);busy=false;online=true;pendingAction=false;mySeat=data.seat;view=data;render();status('เชื่อมต่อกับเจ้าห้องแล้ว');
+       }
+     });
+     const lost=()=>{if(hostConn!==c)return;clearTimeout(joinTimeout);online=false;busy=false;pendingAction=false;status('ขาดการเชื่อมต่อกับเจ้าห้อง กดเชื่อมต่อใหม่ หากเจ้าห้องปิดหน้าเกมต้องสร้างห้องใหม่');render()};
+     c.on('close',lost);c.on('error',lost);
+   });
+   instance.on('error',e=>{if(peer!==instance)return;clearTimeout(joinTimeout);busy=false;status(networkMessage(e));render()});
+ }catch(e){busy=false;status(e.message);render()}
+}
+function inviteLink(){const u=new URL(location.href);u.hash=new URLSearchParams({room,key:secret}).toString();return u.href}
+async function copyInvite(code=false){
+ const text=code?`${room}.${secret}`:inviteLink();
+ try{await navigator.clipboard.writeText(text);status(code?'คัดลอกรหัสห้องแล้ว':'คัดลอกลิงก์แล้ว ส่งให้เพื่อนได้เลย')}
+ catch{$('shareText').value=text;$('shareText').focus();$('shareText').select();status('เลือกข้อความแล้ว กดคัดลอกด้วยตนเอง')}
+}
+function leaveRoom(){
+ if((G||view?.game)&&!confirm('ออกจากเกมนี้ใช่ไหม? หากคุณเป็นเจ้าห้อง เกมของทุกคนจะสิ้นสุด'))return;
+ epoch++;clearTimeout(timer);clearTimeout(joinTimeout);send(hostConn,{type:'leave'});
+ const old=peer;peer=null;hostConn=null;connections.clear();if(old)old.destroy();
+ G=null;view=null;role='host';mySeat=0;room='';secret='';online=false;busy=false;pendingAction=false;
+ players=[{name:cleanName($('playerName').value,'คุณ'),kind:'host',connected:true},...Array.from({length:3},(_,i)=>({name:`บอท ${i+1}`,kind:'bot',connected:true}))];
+ history.replaceState(null,'',location.pathname+location.search);$('inviteInput').value='';status('พร้อมสร้างเกมใหม่');publish();
+}
+function cardEl(c,cls='',idx=null){
+ const title=c.w?'Wizard':c.j?'Jester':`${c.v} ${SU[c.s].n}`;
+ const body=c.w?'<i>🧙</i>WIZARD':c.j?'<i>🃏</i>JESTER':`${c.v}<i>${SU[c.s].s}</i>`;
+ const attrs=`class="card ${c.w||c.j?'sp':''} ${cls}" ${!c.w&&!c.j?`style="color:${SU[c.s].c}"`:''}`;
+ return idx===null?`<div ${attrs}>${body}</div>`:`<button ${attrs} aria-label="${title}" ${cls==='ok'?`onclick="act('play',${idx})"`:'disabled'}>${body}</button>`;
+}
+function render(){
+ const v=role==='host'?(view||snapshot(0)):view,ps=v?.players||players,g=v?.game,local=role==='host';
+ $('setup').hidden=!!g; $('game').hidden=!g;
+ $('nameRow').hidden=!!g||!!(role==='guest'&&online);
+ $('playerName').disabled=local?!!room:online||busy;
+ $('hostSettings').hidden=!local;
+ $('joinBox').hidden=!!g||!!room&&local||role==='guest'&&online;
+ $('count').value=ps.length;
+ $('roomCount').textContent=`${ps.length} คน · ${Math.floor(60/ps.length)} รอบ`;
+ $('count').disabled=!!g;
+ $('lobbySeats').innerHTML=ps.map((p,i)=>`<div class="lobby-seat"><span class="avatar">${p.kind==='bot'?'🤖':p.kind==='host'?'👑':'👤'}</span><div class="seat-copy"><b>${esc(p.name)}</b><small>${p.kind==='bot'?'พร้อมเล่น':p.connected?'เชื่อมต่อแล้ว':'รอเพื่อนเข้าห้อง'}</small></div>${local&&i>0?`<select aria-label="ประเภทผู้เล่นที่นั่ง ${i+1}" onchange="seatChange(${i},this.value)" ${p.kind==='friend'&&p.connected?'disabled':''}><option value="bot" ${p.kind==='bot'?'selected':''}>เพิ่มบอท</option><option value="friend" ${p.kind==='friend'?'selected':''}>ชวนเพื่อน</option></select>`:`<span class="badge">${i===mySeat?'คุณ':p.kind==='bot'?'บอท':'เพื่อน'}</span>`}</div>`).join('');
+ $('createRoom').hidden=!local;$('createRoom').disabled=busy||!!room; $('createRoom').textContent=online?'✓ เปิดห้องออนไลน์แล้ว':busy?'กำลังเชื่อมต่อ…':room?'กำลังเชื่อมต่อห้องใหม่…':'🔗 เปิดห้องชวนเพื่อน';
+ $('startGame').hidden=!local;$('startGame').disabled=!canStart();
+ $('lobbyHint').textContent=local?(blocked()?'รอเพื่อนให้ครบ หรือเปลี่ยนที่นั่งที่ว่างเป็นบอท':'พร้อมแล้ว เริ่มเกมได้เลย'):'รอเจ้าห้องเริ่มเกม';
+ $('share').hidden=!local||!room;
+ if(local&&room){const file=location.protocol==='file:';$('copyLink').disabled=file||!online;$('copyCode').disabled=!online;$('shareText').value=file?`${room}.${secret}`:inviteLink();$('shareHint').textContent=file?'เปิดจากไฟล์: แชร์รหัสให้เพื่อนที่มีไฟล์นี้ได้ เมื่อนำขึ้นเว็บ HTTPS จะคัดลอกลิงก์เชิญได้':'ส่งลิงก์นี้ให้เพื่อน แล้วเปิดหน้านี้ไว้ตลอดเกม';}
+ $('joinButton').disabled=busy; $('reconnect').hidden=local||online; $('reconnect').disabled=busy;
+ $('leave').hidden=!room&&!g;
+ $('rd').textContent=g?`รอบ ${g.r}/${g.max}`:'ตั้งค่าโต๊ะ';
+ if(!g)return;
+ const waiting=ps.some(p=>p.kind==='friend'&&!p.connected),enabled=!waiting&&(local||online)&&!pendingAction;
+ $('pause').hidden=!waiting;
+ $('pause').innerHTML=waiting?`หยุดรอเพื่อนเชื่อมต่อใหม่ ${local?ps.map((p,i)=>p.kind==='friend'&&!p.connected?`<button class="s" onclick="replaceBot(${i})">ให้บอทแทน ${esc(p.name)}</button>`:'').join(''):''}`:'';
+ $('seats').style.setProperty('--seat-count',ps.length);
+ $('seats').innerHTML=ps.map((p,i)=>`<div class="seat ${g.actor===i?'act':''}"><b>${esc(p.name)}${i===mySeat?' (คุณ)':''}</b>${g.dealer===i?' <span class="dl">● แจก</span>':''}<br>${p.kind==='bot'?'🤖':p.connected?'🟢':'🔴'} ทาย ${g.bids[i]??'–'} · ได้ ${g.won[i]}<br>คะแนน ${g.scores[i]} · ไพ่ ${g.counts[i]}</div>`).join('');
+ $('info').innerHTML=g.phase==='trump'?'เปิดได้ Wizard — ผู้แจกกำลังเลือกสีทรัมป์':g.trump!==null?`ทรัมป์: <b style="color:${SU[g.trump].c}">${SU[g.trump].s} ${SU[g.trump].n}</b>`:g.tc?'ไม่มีทรัมป์ (เปิดได้ Jester)':'ไม่มีทรัมป์ (แจกไพ่ครบสำรับ)';
+ $('trick').innerHTML=g.trick.length?g.trick.map(x=>`<div class="slot">${cardEl(x.card)}<span>${esc(ps[x.p].name)}</span></div>`).join(''):`<span class="info">${g.last?esc(g.last)+' ชนะตาที่แล้ว':'เริ่มตาใหม่'}</span>`;
+ $('handTitle').textContent=`ไพ่ของคุณ · ${g.hand.length} ใบ`;
+ $('hand').innerHTML=g.hand.map((c,i)=>cardEl(c,enabled&&g.legal.includes(i)?'ok':'no',i)).join('');
+ let m='',ctl='';const mine=g.actor===mySeat;
+ if(g.phase==='trump'){m=mine?'เลือกสีทรัมป์':`${ps[g.actor].name} กำลังเลือกทรัมป์`;if(mine)ctl=SU.map((s,i)=>`<button ${enabled?'':'disabled'} onclick="act('trump',${i})" style="background:${s.c};color:white">${s.s} ${s.n}</button>`).join('')}
+ else if(g.phase==='bid'){m=mine?'คุณจะชนะกี่ตาในรอบนี้?':`${ps[g.actor].name} กำลังทาย`;if(mine)ctl=Array.from({length:g.r+1},(_,i)=>`<button ${enabled?'':'disabled'} onclick="act('bid',${i})">${i}</button>`).join('')}
+ else if(g.phase==='play')m=mine?'ตาของคุณ — เลือกไพ่ที่เล่นได้':`รอ ${ps[g.actor].name} เล่นไพ่…`;
+ else if(g.phase==='trickEnd')m='กำลังสรุปผู้ชนะตานี้…';
+ else if(g.phase==='roundEnd'){const d=g.hist[g.hist.length-1].d[mySeat];m=`จบรอบ คุณได้ ${d>0?'+':''}${d} คะแนน`;ctl=local?`<button ${enabled?'':'disabled'} onclick="act('next')">รอบถัดไป ▶</button><button class="s" onclick="act('lobby')">กลับห้องรอ</button>`:'รอเจ้าห้องเริ่มรอบถัดไป'}
+ else if(g.phase==='over'){const mx=Math.max(...g.scores);m=`🏆 ผู้ชนะ: ${ps.filter((_,i)=>g.scores[i]===mx).map(p=>p.name).join(', ')} (${mx} คะแนน)`;ctl=local?'<button onclick="act(\'lobby\')">กลับห้องรอ / เล่นใหม่</button>':'รอเจ้าห้องเริ่มเกมใหม่'}
+ $('msg').textContent=m;$('ctl').innerHTML=ctl;
+ $('sb').innerHTML=`<table><tr><th>รอบ</th>${ps.map(p=>`<th>${esc(p.name)}</th>`).join('')}</tr>${g.hist.map(x=>`<tr><td>${x.r}</td>${x.d.map((d,i)=>`<td>${x.b[i]}/${x.w[i]} (${d>0?'+':''}${d})</td>`).join('')}</tr>`).join('')}<tr><th>รวม</th>${g.scores.map(s=>`<th>${s}</th>`).join('')}</tr></table><p class="info">ทาย / ได้จริง (คะแนนรอบนี้)</p>`;
+}
+$('playerName').addEventListener('input',()=>{if(role==='host'&&!room){players[0].name=cleanName($('playerName').value,'คุณ');publish()}});
+const initial=parseInvite(location.href);if(initial){$('inviteInput').value=location.href;status('คุณได้รับคำเชิญ ใส่ชื่อแล้วกดเข้าห้อง');$('joinBox').open=true}
+publish();
+</script></body></html> content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Wizard – The Card Game</title>
 <style>
 :root{--bg:#1d5a3f;--bg2:#154631;--panel:rgba(0,0,0,.28);--tx:#f4f1e6;--mut:#b9d1c3;--card:#fffdf5;--cardtx:#222;--acc:#f2c94c;--dis:.38;
